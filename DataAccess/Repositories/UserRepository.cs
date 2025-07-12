@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories;
 
-public class UserRepository(DbContext dbContext) : IUserRepository
+public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
     public List<User> GetAllUsers()
     {
@@ -71,6 +71,4 @@ public class UserRepository(DbContext dbContext) : IUserRepository
             throw new Exception("An error occurred while deleting the user.", ex);
         }
     }
-    
-    
 }
