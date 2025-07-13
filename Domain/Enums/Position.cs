@@ -2,12 +2,8 @@ using System.ComponentModel;
 
 public enum Position
 {
+    Golero,
     Defensa,
-    LateralDerecho,
-    LateralIzquierdo,
     Mediocampista,
-    MediocampistaDefensivo,
-    CentroDelantero,
-    DelanteroDerecho,
-    DelanteroIzquierdo,
+    Delantero
 }

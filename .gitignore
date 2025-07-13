@@ -11,6 +11,10 @@
 # env
 .env
 
+# Ignorar launchSettings.json
+Properties/launchSettings.json
+Yorugua/Properties/launchSettings.json
+
 # User-specific files
 *.rsuser
 *.suo

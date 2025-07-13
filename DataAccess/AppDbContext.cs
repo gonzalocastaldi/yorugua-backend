@@ -12,6 +12,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Relación Player - Team (Un jugador pertenece a un equipo)
+        modelBuilder.Entity<Player>()
+            .HasOne(p => p.Team)
+            .WithMany(t => t.Players)
+            .HasForeignKey(p => p.TeamId);
+        
         base.OnModelCreating(modelBuilder);
     }
 }

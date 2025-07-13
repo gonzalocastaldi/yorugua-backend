@@ -12,7 +12,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
 Console.WriteLine(jwtKey);
 if (string.IsNullOrEmpty(jwtKey))
     throw new InvalidOperationException("Jwt:Key no está configurado. Definila como variable de entorno.");
@@ -77,9 +77,11 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
 builder.Services.AddControllers();
 
