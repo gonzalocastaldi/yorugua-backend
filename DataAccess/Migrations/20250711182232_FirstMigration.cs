@@ -41,7 +41,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Lastname = table.Column<int>(type: "integer", nullable: false),
+                    Lastname = table.Column<int>(type: "text", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
                     TeamId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
