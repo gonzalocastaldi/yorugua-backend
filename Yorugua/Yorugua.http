@@ -1,0 +1,6 @@
+@Yorugua_HostAddress = http://localhost:5278
+
+GET {{Yorugua_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
