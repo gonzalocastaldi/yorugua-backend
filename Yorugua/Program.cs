@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
-Console.WriteLine(jwtKey);
 if (string.IsNullOrEmpty(jwtKey))
     throw new InvalidOperationException("Jwt:Key no está configurado. Definila como variable de entorno.");
 

@@ -12,7 +12,6 @@ public class UserController(IUserService userService) : ControllerBase
     private readonly IUserService _userService = userService;
     
     [HttpPost("register")]
-    [Authorize]
     public async Task<IActionResult> Register(UserLoginRegisterDto loginRegisterDto)
     {
         _userService.Register(loginRegisterDto.Username, loginRegisterDto.Password, loginRegisterDto.Balance);
@@ -20,7 +19,6 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpPost("login")]
-    [Authorize]
     public async Task<IActionResult> Login(UserLoginRegisterDto loginRegisterDto)
     {
         var token = _userService.Login(loginRegisterDto.Username, loginRegisterDto.Password);
