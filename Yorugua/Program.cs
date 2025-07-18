@@ -73,7 +73,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
