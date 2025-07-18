@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key");
-Console.WriteLine(jwtKey);
 if (string.IsNullOrEmpty(jwtKey))
     throw new InvalidOperationException("Jwt:Key no está configurado. Definila como variable de entorno.");
 
@@ -66,14 +65,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-var host = Environment.GetEnvironmentVariable("DB_HOST");
-var port = Environment.GetEnvironmentVariable("DB_PORT");
-var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
-var user = Environment.GetEnvironmentVariable("POSTGRES_USER");
-var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-var connectionString = $"Host={host};Port={port};Database={db};Username={user};Password={password}";
-
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();

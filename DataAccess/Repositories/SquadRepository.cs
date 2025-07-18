@@ -49,6 +49,7 @@ public class SquadRepository(AppDbContext dbContext) : ISquadRepository
         try
         {
             dbContext.Set<Player>().Add(player);
+            dbContext.SaveChanges();
         }
         catch (Exception ex)
         {
