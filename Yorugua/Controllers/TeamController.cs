@@ -1,9 +1,12 @@
 using Dtos;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
+using Yorugua.Filters;
 
 namespace Yorugua.Controllers;
 
+[ApiController]
+[ExceptionFilters]
 public class TeamController(ITeamService teamService) : ControllerBase
 {
     private readonly ITeamService _teamService = teamService;

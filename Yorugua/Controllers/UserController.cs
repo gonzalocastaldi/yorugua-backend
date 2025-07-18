@@ -1,12 +1,12 @@
 using Dtos;
 using IServiceLogic;
-using Microsoft.AspNetCore.Authorization;
+using Yorugua.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Yorugua.Controllers;
 [Route("api/v1/users")]
 [ApiController]
-
+[ExceptionFilters]
 public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Yorugua.Filters;
 
-public class ExceptionFilters : IExceptionFilter
+[ApiController]
+[ExceptionFilters]
+public class ExceptionFilters : Attribute, IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
