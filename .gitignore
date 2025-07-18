@@ -7,13 +7,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+**/Properties/launchSettings.json
+
 
 # env
 .env
-
-# Ignorar launchSettings.json
-Properties/launchSettings.json
-Yorugua/Properties/launchSettings.json
 
 # User-specific files
 *.rsuser
