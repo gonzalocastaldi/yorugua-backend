@@ -1,5 +1,4 @@
 using Domain;
-using Domain.CustomExceptions;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +14,7 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
         }
         catch (Exception ex)
         {
-            throw new InvalidCredentialsException("Invalid username or password.");
+            throw new Exception("An error occurred while retrieving users.", ex);
         }
     }
     

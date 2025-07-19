@@ -3,6 +3,7 @@ using System.Text;
 using IDataAccess;
 using IServiceLogic;
 using System.IdentityModel.Tokens.Jwt;
+using Domain.CustomExceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -64,10 +65,10 @@ public class UserService(IUserRepository userRepository, IConfiguration config) 
     public string Login(string username, string password)
     {
         var user = _userRepository.GetAllUsers().FirstOrDefault(u => u.Username == username) 
-                   ?? throw new Exception("User not found.");
+                   ?? throw new InvalidCredentialsException("Incorrect username or password.");
 
         if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            throw new Exception("Incorrect password.");
+            throw new InvalidCredentialsException("Incorrect username or password.");
 
         return CrearToken(user);
     }
