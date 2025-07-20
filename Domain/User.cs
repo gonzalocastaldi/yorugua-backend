@@ -1,10 +1,13 @@
-﻿public class User
+﻿using Domain;
+
+public class User
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Username { get; set; } = null!;
     public byte[] PasswordHash { get; set; } = null!;
     public byte[] PasswordSalt { get; set; } = null!;
     public double Balance { get; set; }
+    public Squad Squad { get; set; } = new Squad();
 
     public User() { }
 

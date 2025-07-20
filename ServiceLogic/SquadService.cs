@@ -45,4 +45,17 @@ public class SquadService(ISquadRepository squadRepository) : ISquadService
         _squadRepository.AddPlayer(squadId, player);
     }
     
+    public Squad GetSquadByUsername(string username)
+    {
+        if (string.IsNullOrEmpty(username))
+            throw new ArgumentNullException(nameof(username), "Username cannot be null or empty.");
+        
+        var squad = _squadRepository.GetSquadByUsername(username);
+        
+        if (squad == null)
+            throw new KeyNotFoundException($"Squad for user {username} not found.");
+        
+        return squad;
+    }
+    
 }

@@ -21,7 +21,6 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Leagues", x => x.Id);
                 });
-
             migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
@@ -80,7 +79,7 @@ namespace DataAccess.Migrations
                         principalTable: "Teams",
                         principalColumn: "Id");
                 });
-
+                
             migrationBuilder.CreateIndex(
                 name: "IX_Players_TeamId",
                 table: "Players",

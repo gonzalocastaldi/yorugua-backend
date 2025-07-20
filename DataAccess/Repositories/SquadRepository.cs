@@ -35,6 +35,24 @@ public class SquadRepository(AppDbContext dbContext) : ISquadRepository
             throw new Exception($"An error occurred while retrieving the squad with ID {squadId}.", ex);
         }
     }
+    
+    public Squad GetSquadByUsername(string username)
+    {
+        if (string.IsNullOrEmpty(username))
+            throw new ArgumentNullException(nameof(username), "Username cannot be null or empty.");
+
+        try
+        {
+            var toReturn = dbContext.Set<User>().FirstOrDefault(s => s.Username == username )?.Squad;
+            if (toReturn == null)
+                throw new KeyNotFoundException($"Squad for user {username} not found.");
+            return toReturn;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while retrieving the squad for user {username}.", ex);
+        }
+    }
 
     public void AddPlayer(Guid squadId, Player player)
     {

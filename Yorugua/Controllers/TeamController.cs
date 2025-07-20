@@ -5,20 +5,21 @@ using Yorugua.Filters;
 
 namespace Yorugua.Controllers;
 
+[Route("api/v1/teams")]
 [ApiController]
 [ExceptionFilters]
 public class TeamController(ITeamService teamService) : ControllerBase
 {
     private readonly ITeamService _teamService = teamService;
     
-    [HttpGet("api/v1/teams")]
+    [HttpGet]
     public async Task<IActionResult> GetAllTeams()
     {
         var teams = _teamService.GetAllTeams();
         return Ok(teams);
     }
     
-    [HttpGet("api/v1/teams/{teamId}")]
+    [HttpGet("{teamId}")]
     public async Task<IActionResult> GetTeamById(Guid teamId)
     {
         if (teamId == Guid.Empty)
@@ -41,7 +42,7 @@ public class TeamController(ITeamService teamService) : ControllerBase
         }
     }
     
-    [HttpPost("api/v1/teams")]
+    [HttpPost]
     public async Task<IActionResult> CreateTeam([FromBody] List<TeamDto> team)
     {
         try
