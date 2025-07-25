@@ -21,6 +21,12 @@ public class ExceptionFilters : Attribute, IExceptionFilter
             response.Message = "Usuario o contraseña incorrectos";
         }
 
+        if (context.Exception is UsernameAlreadyExistsException)
+        {
+            statusCode = 409;
+            response.Message = "El nombre de usuario ya existe";
+        }
+
         if (statusCode == 0)
         {
             statusCode = 500;
