@@ -42,7 +42,7 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
             dbContext.Set<User>().Add(user);
             dbContext.SaveChanges();
         }
-        catch (DbUpdateException ex)
+        catch (Exception ex)
         {
             throw new Exception("An error occurred while creating the user.", ex);
         }

@@ -15,7 +15,7 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<IActionResult> Register(UserLoginRegisterDto loginRegisterDto)
     {
         _userService.Register(loginRegisterDto.Username, loginRegisterDto.Password);
-        return Ok("Usuario creado");
+        return CreatedAtAction(nameof(Register), new { username = loginRegisterDto.Username }, null);
     }
 
     [HttpPost("login")]
