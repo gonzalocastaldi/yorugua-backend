@@ -41,7 +41,7 @@ public class UserService(IUserRepository userRepository, IConfiguration config) 
     public void Register(string username, string password)
     {
         if (_userRepository.GetAllUsers().Any(u => u.Username == username))
-            throw new Exception("El usuario ya existe.");
+            throw new UsernameAlreadyExistsException("El usuario ya existe.");
 
         CreatePasswordHash(password, out var hash, out var salt);
 
