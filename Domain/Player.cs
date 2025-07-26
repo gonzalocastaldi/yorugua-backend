@@ -13,6 +13,7 @@ public class Player
     public int YellowCards { get; set; }
     public Team Team { get; set; }
     public Guid TeamId { get; set; }
+    public ICollection<Squad> Squads { get; set; }
 
     public Player() { }
     

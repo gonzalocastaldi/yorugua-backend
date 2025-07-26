@@ -1,4 +1,5 @@
 using Domain;
+using Dtos;
 using IDataAccess;
 using IServiceLogic;
 
@@ -29,8 +30,10 @@ public class SquadService(ISquadRepository squadRepository) : ISquadService
         return squad;
     }
     
-    public void AddPlayer(Guid squadId, Player player)
+    public void AddPlayer(Guid squadId, PlayerIdDto playerId)
     {
+        var player = _squadRepository.GetPlayerById(playerId.Id);
+        
         if (squadId == Guid.Empty)
             throw new ArgumentNullException(nameof(squadId), "Squad ID cannot be empty.");
         
@@ -56,6 +59,25 @@ public class SquadService(ISquadRepository squadRepository) : ISquadService
             throw new KeyNotFoundException($"Squad for user {username} not found.");
         
         return squad;
+    }
+    
+    public void DeletePlayer(Guid squadId, PlayerIdDto playerId)
+    {
+        var player = _squadRepository.GetPlayerById(playerId.Id);
+        
+        if (squadId == Guid.Empty)
+            throw new ArgumentNullException(nameof(squadId), "Squad ID cannot be empty.");
+        
+        if (player == null)
+            throw new ArgumentNullException(nameof(player), "Player cannot be null.");
+        
+        var squad = _squadRepository.GetSquadById(squadId);
+        
+        if (squad == null)
+            throw new KeyNotFoundException($"Squad with ID {squadId} not found.");
+        
+        
+        _squadRepository.DeletePlayer(squadId, player);
     }
     
 }

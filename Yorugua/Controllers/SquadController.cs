@@ -21,21 +21,19 @@ public class SquadController(ISquadService squadService) : ControllerBase
         return Ok(players);
     }
     
-    
-    /*
-    [HttpPost("//agregar")]
+    [HttpPost("{squadId}/add-player")]
     [Authorize]
-    public async Task<IActionResult> AddPlayer([FromBody] PlayerDto player)
+    public async Task<IActionResult> AddPlayer(Guid squadId, [FromBody] PlayerIdDto playerId)
     {
-        try
-        {
-            _squadService.CreateTeam(team);
-            return Ok(team);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
+        _squadService.AddPlayer(squadId ,playerId);
+        return Ok(squadId);
     }
-    */
+
+    [HttpPost("{squadId}/delete-player")]
+    [Authorize]
+    public async Task<IActionResult> DeletePlayer(Guid squadId, [FromBody] PlayerIdDto player)
+    {
+        _squadService.DeletePlayer(squadId, player);
+        return Ok(squadId);
+    }
 }
