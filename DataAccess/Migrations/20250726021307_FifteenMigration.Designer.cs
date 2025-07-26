@@ -3,6 +3,7 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726021307_FifteenMigration")]
+    partial class FifteenMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +65,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("RedCards")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("SquadId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid");
 
@@ -69,6 +75,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SquadId");
 
                     b.HasIndex("TeamId");
 
@@ -114,21 +122,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("PlayerSquad", b =>
-                {
-                    b.Property<Guid>("PlayersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SquadsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("PlayersId", "SquadsId");
-
-                    b.HasIndex("SquadsId");
-
-                    b.ToTable("PlayerSquad");
-                });
-
             modelBuilder.Entity("User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -167,6 +160,10 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Player", b =>
                 {
+                    b.HasOne("Domain.Squad", null)
+                        .WithMany("Players")
+                        .HasForeignKey("SquadId");
+
                     b.HasOne("Domain.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamId")
@@ -174,21 +171,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("PlayerSquad", b =>
-                {
-                    b.HasOne("Domain.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Squad", null)
-                        .WithMany()
-                        .HasForeignKey("SquadsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("User", b =>
@@ -209,6 +191,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.League", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Domain.Squad", b =>
+                {
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("Domain.Team", b =>

@@ -1,5 +1,6 @@
 using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories;
 
@@ -28,7 +29,7 @@ public class SquadRepository(AppDbContext dbContext) : ISquadRepository
 
         try
         {
-            return dbContext.Set<Squad>().FirstOrDefault(s => s.Id == squadId);
+            return dbContext.Set<Squad>().Include(s => s.Players).FirstOrDefault(s => s.Id == squadId);
         }
         catch (Exception ex)
         {
@@ -43,7 +44,19 @@ public class SquadRepository(AppDbContext dbContext) : ISquadRepository
 
         try
         {
-            var toReturn = dbContext.Set<User>().FirstOrDefault(s => s.Username == username )?.Squad;
+            var userId = dbContext.Users
+                .Where(u => u.Username == username)
+                .Select(u => u.Id)
+                .FirstOrDefault();
+            if (userId == Guid.Empty)
+                throw new KeyNotFoundException($"User with username {username} not found.");
+            
+            var toReturn = dbContext.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Squad)
+                .ThenInclude(s => s.Players)
+                .Select(u => u.Squad)
+                .FirstOrDefault();
             if (toReturn == null)
                 throw new KeyNotFoundException($"Squad for user {username} not found.");
             return toReturn;
@@ -66,12 +79,51 @@ public class SquadRepository(AppDbContext dbContext) : ISquadRepository
 
         try
         {
-            dbContext.Set<Player>().Add(player);
+            squad.Players.Add(player);
             dbContext.SaveChanges();
         }
         catch (Exception ex)
         {
             throw new Exception("An error occurred while adding player to the squad.", ex);
+        }
+    }
+    
+    public Player GetPlayerById(Guid playerId)
+    {
+        if (playerId == Guid.Empty)
+            throw new ArgumentNullException(nameof(playerId), "Player ID cannot be empty.");
+
+        try
+        {
+            return dbContext.Set<Player>().FirstOrDefault(p => p.Id == playerId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while retrieving the player with ID {playerId}.", ex);
+        }
+    }
+    
+    public void DeletePlayer(Guid squadId, Player player)
+    {
+        if (squadId == Guid.Empty)
+            throw new ArgumentNullException(nameof(squadId), "Squad ID cannot be empty.");
+        
+        if (player == null)
+            throw new ArgumentNullException(nameof(player), "Player cannot be null.");
+
+        var squad = GetSquadById(squadId);
+        
+        if(squad == null)
+            throw new KeyNotFoundException($"Squad with ID {squadId} not found.");
+
+        try
+        {
+            dbContext.Set<Player>().Remove(player);
+            dbContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while deleting the player from the squad.", ex);
         }
     }
 }
